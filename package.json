@@ -1,6 +1,6 @@
 {
   "name": "inkstone-mcp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agentic MCP memory server with dream cycle — decay, consolidation, and archival",
   "type": "module",
   "main": "dist/index.js",
