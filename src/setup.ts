@@ -111,3 +111,31 @@ export async function runSetup(): Promise<void> {
 
   console.log("\nDone. Run `inkstone` to start the server.");
 }
+
+export function installCron(): void {
+  const cronLine = "0 2 * * * cd ~ && inkstone nightly --root=~/projects 2>&1 | logger -t inkstone-nightly";
+  const comment = "# Inkstone nightly pipeline";
+
+  try {
+    const existing = execSync("crontab -l 2>/dev/null || true", { encoding: "utf-8", timeout: 10_000 });
+    if (existing.includes("inkstone nightly")) {
+      console.log("Cron entry already exists:");
+      const lines = existing.split("\n").filter((l) => l.includes("inkstone nightly"));
+      for (const l of lines) console.log(`  ${l}`);
+      return;
+    }
+
+    const newCron = existing.trimEnd() + "\n" + comment + "\n" + cronLine + "\n";
+    execSync(`echo ${JSON.stringify(newCron)} | crontab -`, { timeout: 10_000 });
+    console.log("Cron installed. Runs nightly at 2 AM:");
+    console.log(`  ${cronLine}`);
+    console.log("\nTo change the schedule or root directory:");
+    console.log("  crontab -e");
+  } catch (e) {
+    console.error("Failed to install cron:", String(e));
+    console.log("\nManual cron setup:");
+    console.log("  crontab -e");
+    console.log("  Add:");
+    console.log(`  ${cronLine}`);
+  }
+}

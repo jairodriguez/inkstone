@@ -244,6 +244,12 @@ async function main(): Promise<void> {
       break;
     }
 
+    case "cron-install": {
+      const { installCron } = await import("./setup.js");
+      installCron();
+      break;
+    }
+
     case "migrate": {
  console.log("Migration from legacy databases...");
  console.log(" (Use: inkstone-migrate --from hippocampus --db /path/to/hippocampus.db)");
@@ -437,6 +443,7 @@ Maintenance:
   inkstone status                   DB statistics (chunks, types, decays)
   inkstone check                    Integrity check (PRAGMA integrity_check)
   inkstone setup                    Check prerequisites (Ollama, models)
+  inkstone cron-install             Install nightly cron (2 AM)
 
   Ingestion:
   inkstone ingest-files             Ingest workspace files

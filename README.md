@@ -543,6 +543,86 @@ Runs 5 sequential steps with individual timeouts. State saves after each step �
 | 4 | `dream --steps=1-7` | 15 min | Decay, lifecycle, entity extraction, pruning, graph edges (no LLM) |
 | 5 | `dream --steps=8-14` | 60 min | Contradictions, goals, failures, causal links, clusters (LLM) |
 
+## Automation
+
+Inkstone is designed to run unattended. Set up the cron once; it captures and maintains itself nightly.
+
+### Install Nightly Cron
+
+```bash
+# One command — adds "inkstone nightly --root=~/projects" at 2 AM
+inkstone cron-install
+
+# Or manually:
+crontab -e
+# Add:
+0 2 * * * cd ~ && inkstone nightly --root=~/projects 2>&1 | logger -t inkstone-nightly
+```
+
+The nightly pipeline runs 5 steps: ingest sessions (Gemma 4 → wiki), ingest files (workspace → wiki), index wiki → DB, dream fast (steps 1-7, no LLM), dream LLM (steps 8-14). Each step has a timeout. State saves between steps — a crash doesn't lose progress.
+
+### What to Tell Your AI Agent
+
+Add this to your project's `CLAUD.md`, `AGENTS.md`, or agent instructions:
+
+```markdown
+## Inkstone Memory
+
+Inkstone is a persistent memory server running on this machine.
+It auto-ingests AI sessions nightly and maintains a searchable knowledge graph.
+
+### Setup (one-time)
+1. Install: `npm install -g inkstone-mcp`
+2. Pull models: `ollama pull gemma4:e4b && ollama pull nomic-embed-text`
+3. Verify: `inkstone setup`
+4. Install cron: `inkstone cron-install` (or `crontab -e`)
+5. Connect: add the MCP server config to your client
+
+### Daily use
+- Before answering, call `memory_search` for relevant context.
+- After making a decision or confirming a fact, call `memory_write` to persist it immediately (don't wait for nightly ingest).
+- The nightly pipeline auto-ingests session logs, so repeated context won't be needed tomorrow.
+
+### Commands
+inkstone                          Start MCP server (stdio)
+inkstone status                   DB statistics
+inkstone search <query>           Search memories
+inkstone write <text>             Write a memory (use for immediate persistence)
+inkstone ingest-sessions          Summarize today's sessions
+inkstone nightly --root=.         Full pipeline
+inkstone cron-install             Install nightly cron
+```
+
+### MCP Client Setup
+
+Connect Inkstone to your AI agent via MCP:
+
+**Claude Code** — add to `~/.claude.json`:
+```json
+{
+  "mcpServers": {
+    "inkstone": {
+      "command": "inkstone",
+      "args": []
+    }
+  }
+}
+```
+
+**OpenCode** — add to `opencode.json`:
+```json
+{
+  "mcpServers": {
+    "inkstone": {
+      "command": "inkstone",
+      "args": []
+    }
+  }
+}
+```
+
+**Cline / Continue.dev / any MCP client** — same pattern: command `inkstone`, no args.
+
 ## Backup & Recovery
 
 Automatic backups rotate on every schema change:
