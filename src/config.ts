@@ -14,7 +14,7 @@ import { dirname, join, resolve } from "node:path";
 export const INKSTONE_ROOT = process.env.INKSTONE_ROOT ||
   join(process.env.HOME || "/tmp", ".inkstone");
 
-export const DB_PATH = process.env.INKSTONE_DB || join(INKSTONE_ROOT, "inkstone-full.db");
+export const DB_PATH = process.env.INKSTONE_DB || join(INKSTONE_ROOT, "inkstone.db");
 export const WIKI_DIR = process.env.INKSTONE_WIKI || join(INKSTONE_ROOT, "wiki");
 export const ARCHIVE_DIR = join(INKSTONE_ROOT, "archive");
 

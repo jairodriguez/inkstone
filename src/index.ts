@@ -456,7 +456,7 @@ Maintenance:
   inkstone migrate                  Migrate from legacy (hippocampus/memex)
 
 Configuration (env vars):
-  INKSTONE_DB              DB path (default: ~/.inkstone/inkstone-full.db)
+  INKSTONE_DB              DB path (default: ~/.inkstone/inkstone.db)
   INKSTONE_ROOT            Root dir (default: ~/.inkstone)
   INKSTONE_WIKI            Wiki dir (default: ~/.inkstone/wiki)
   OPENROUTER_API_KEY       For cloud LLM/embeddings
