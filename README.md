@@ -1,4 +1,4 @@
-# Inkstone — Memory Server for AI Agents
+# Inkstone — AI Memory That Manages Itself
 
 [![CI](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml/badge.svg)](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,9 +6,11 @@
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue.svg)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/npm/v/inkstone-mcp)](https://www.npmjs.com/package/inkstone-mcp)
 
-Every new AI session starts from zero. Your agent doesn't remember the infrastructure setup from yesterday, the Postgres decision from last week, or the deployment preferences you set last month. You repeat yourself constantly.
+Every AI session starts from zero. Your agent doesn't remember what you discussed yesterday, the decision you made last week, or the infrastructure detail you confirmed last month. You repeat yourself. It wastes time.
 
-**Inkstone is a persistent memory layer for AI agents.** A SQLite-backed MCP server with full-text search, vector embeddings, exponential decay, graph traversal, and a 14-step automated maintenance pipeline. 71 ms startup. Direct disk writes. No export step. Works with any MCP client.
+Memory servers fix this. But most are just save-and-return key-value stores. They don't know what's important, what's outdated, or what contradicts itself. They accumulate noise until search breaks.
+
+**Inkstone is different.** It's a self-maintaining knowledge base for AI agents with hybrid search (FTS + vectors + graph), exponential decay scoring, and a 14-step dream cycle that automatically maintains itself. You write memories. Inkstone handles the rest.
 
 ```bash
 # Start the memory server
@@ -24,16 +26,32 @@ inkstone search "RDS"
 # The agent calls memory_search automatically.
 ```
 
-## Why Inkstone?
+## Why Inkstone Over Other MCP Memory Servers?
 
-Agent memory servers exist, but most are toys. They're slow (13s WASM load), fragile (in-memory export on every write), or missing search quality. Inkstone is built for production:
+There are dozens of MCP memory servers. Most do one thing: save and return text. Inkstone is different in kind, not degree.
 
-- **Native SQLite (better-sqlite3)**: 71 ms startup. No 13-second WASM load. No 1.13 GB export. Writes go straight to disk via WAL journal.
-- **Hybrid search**: Full-text (Porter stemmer + BM25) + vector embeddings (Ollama or OpenAI) + graph traversal. Score fusion produces relevant results, not keyword matches.
-- **Decay scoring**: Not all knowledge is equally important. A decision from today ranks above a fact from 6 months ago. Exponential decay per memory type.
-- **14-step dream cycle**: Automated maintenance — decay recalculation, lifecycle promotion, entity extraction, contradiction detection, goal inference, failure pattern identification, cluster distillation. Run it nightly via cron.
-- **Multi-user RBAC**: Namespace-level permissions. Useful for agent teams that should share some knowledge but not all.
-- **Backup rotation**: Up to 3 automatic `.bak` files on every schema change.
+**Every other memory server:** flat key-value storage with keyword search. Write a note, get it back verbatim. No ranking, no decay, no maintenance.
+
+**Inkstone:** a knowledge base that manages itself.
+
+| Feature | Other memory servers | Inkstone |
+|---------|-------------------|---------|
+| **Search** | Keyword match only | FTS (Porter stemmer + BM25) + vector embeddings + graph, fused with score weights |
+| **Decay** | None — old memories rank same as new | Exponential decay per type (corrections last 10yr, emotions fade in 3 days) |
+| **Lifecycle** | None | active → validated → stale → archived → pruned (auto-promoted by access) |
+| **Maintenance** | None | 14-step dream cycle: decay recalc, contradiction detection, goal inference, failure patterns, cluster distillation, self-model updates |
+| **Graph** | None | Entity relations, neighbors, shortest path, centrality, contradiction traversal |
+| **SQL engine** | sql.js WASM (13s load, in-memory export) | better-sqlite3 native (71ms load, direct disk writes) |
+| **Multi-user** | None | Namespace-level RBAC with API keys |
+| **Backups** | Manual | Auto-rotation (3 .bak files on every schema change) |
+| **LLM enrichment** | None | Auto-summarize, type detection, contradiction scanning, causal linking |
+
+**The headline features:**
+
+- **Decay scoring** — A decision from today ranks above a random fact from 6 months ago. Configurable half-lives per memory type (corrections: 10 years. Emotions: 3 days.)
+- **14-step dream cycle** — Run it nightly via cron. Inkstone automatically recalculates decay, promotes/archives chunks, detects contradictions, infers goals, identifies failure patterns, and distills clusters. Zero manual maintenance.
+- **Hybrid search** — Full-text (custom Porter stemmer + BM25 inverted index) + vector cosine similarity (Ollama or OpenAI) + graph edge boosts. All three fused into a composite score.
+- **71 ms startup** — Native better-sqlite3 binding. No WASM overhead, no 1.13 GB export step, no corruption risk.
 
 ## Quick Start
 
