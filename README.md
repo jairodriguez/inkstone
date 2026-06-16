@@ -593,11 +593,8 @@ inkstone nightly --root=.         Full pipeline
 inkstone cron-install             Install nightly cron
 ```
 
-### MCP Client Setup
+Connect Inkstone to your AI agent via MCP. The config is identical across all clients:
 
-Connect Inkstone to your AI agent via MCP:
-
-**Claude Code** — add to `~/.claude.json`:
 ```json
 {
   "mcpServers": {
@@ -609,19 +606,7 @@ Connect Inkstone to your AI agent via MCP:
 }
 ```
 
-**OpenCode** — add to `opencode.json`:
-```json
-{
-  "mcpServers": {
-    "inkstone": {
-      "command": "inkstone",
-      "args": []
-    }
-  }
-}
-```
-
-**Cline / Continue.dev / any MCP client** — same pattern: command `inkstone`, no args.
+Put this in `~/.claude.json` (Claude Code), `opencode.json` (OpenCode), or your client's MCP config. Cline, Continue.dev, and any MCP-compatible client use the same pattern.
 
 ## Backup & Recovery
 
