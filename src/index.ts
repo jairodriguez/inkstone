@@ -238,7 +238,13 @@ async function main(): Promise<void> {
       break;
     }
 
- case "migrate": {
+    case "setup": {
+      const { runSetup } = await import("./setup.js");
+      await runSetup();
+      break;
+    }
+
+    case "migrate": {
  console.log("Migration from legacy databases...");
  console.log(" (Use: inkstone-migrate --from hippocampus --db /path/to/hippocampus.db)");
  console.log(" (Use: inkstone-migrate --from memex --db /path/to/memex.sqlite)");
@@ -430,6 +436,7 @@ Maintenance:
   Diagnostics:
   inkstone status                   DB statistics (chunks, types, decays)
   inkstone check                    Integrity check (PRAGMA integrity_check)
+  inkstone setup                    Check prerequisites (Ollama, models)
 
   Ingestion:
   inkstone ingest-files             Ingest workspace files

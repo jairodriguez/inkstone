@@ -41,6 +41,27 @@ inkstone dream             # 14-step maintenance cycle
 inkstone search "RDS decision"
 ```
 
+## Prerequisites
+
+Inkstone uses **Ollama** with **Gemma 4** for session summarization and **nomic-embed-text** for vector embeddings.
+
+```bash
+# 1. Install Ollama (macOS / Linux)
+# macOS:
+brew install --cask ollama
+# Linux:
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# 2. Pull required models
+ollama pull gemma4:e4b     # Main summarization model (5.5 GB)
+ollama pull nomic-embed-text  # Embedding model (274 MB)
+
+# 3. Verify everything works
+inkstone setup
+```
+
+All models run locally on your machine. No cloud API keys needed. If you prefer cloud LLMs, set `OPENROUTER_API_KEY` and Inkstone falls back to OpenRouter automatically.
+
 ## What Makes Inkstone Different?
 
 Most "memory servers" are passive storage — you write a note, it saves it. Inkstone is an active extraction pipeline. It reads your session history, distills knowledge, and maintains itself.
@@ -358,6 +379,7 @@ inkstone ingest-sessions         Summarize Claude sessions
 
 # ── Diagnostics ────────────────────────────────────────────────────
 inkstone status                  DB stats (chunks, types, decays)
+inkstone setup                   Check prerequisites (Ollama, models)
 inkstone check                   Integrity check
 inkstone nlm-status              Show NLM notebook domain routes
 

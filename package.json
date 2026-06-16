@@ -16,6 +16,7 @@
     "typecheck": "tsc -p tsconfig.test.json --noEmit 2>&1 || true",
     "dream": "node dist/dream/cli.js",
     "migrate": "node dist/db/migrate-from-legacy.js",
+    "postinstall": "node -e \"console.log('\\n  Inkstone installed! Run \\x1b[1minkstone setup\\x1b[0m to check prerequisites (Ollama, Gemma 4, embeddings).\\n')\"",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
