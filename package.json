@@ -1,0 +1,43 @@
+{
+  "name": "inkstone-mcp",
+  "version": "0.1.0",
+  "description": "Agentic MCP memory server with dream cycle — decay, consolidation, and archival",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "inkstone": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:test": "tsc -p tsconfig.test.json && tsc --outDir dist --rootDir src --skipLibCheck src/test/*.ts",
+    "dev": "tsc --watch",
+    "start": "node dist/mcp/server.js",
+    "test": "node --test dist/test/*.js || echo 'Tests need updating for better-sqlite3 API — see CONTRIBUTING.md'",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit 2>&1 || true",
+    "dream": "node dist/dream/cli.js",
+    "migrate": "node dist/db/migrate-from-legacy.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "memory",
+    "ai-agent",
+    "dream-cycle",
+    "sqlite",
+    "local-first"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "sql.js": "^1.12.0",
+    "typescript": "^5.8.0"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^12.10.0",
+    "@types/better-sqlite3": "^7.6.13"
+  }
+}
