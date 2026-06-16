@@ -1,4 +1,4 @@
-# Inkstone — The AI Agent That Remembers
+# Inkstone — Memory Server for AI Agents
 
 [![CI](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml/badge.svg)](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,9 +6,9 @@
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue.svg)](https://modelcontextprotocol.io)
 [![npm](https://img.shields.io/npm/v/inkstone-mcp)](https://www.npmjs.com/package/inkstone-mcp)
 
-Every new AI session starts with a blank slate. Your agent doesn't remember the infrastructure setup you explained yesterday, the deployment preferences you set last week, or the decision you made about Postgres hosting last month. You repeat yourself constantly.
+Every new AI session starts from zero. Your agent doesn't remember the infrastructure setup from yesterday, the Postgres decision from last week, or the deployment preferences you set last month. You repeat yourself constantly.
 
-**Inkstone is the memory layer your agent queries like its own brain.** A SQLite-backed MCP server with full-text search, vector embeddings, exponential decay, graph traversal, and a 14-step automated maintenance pipeline. 71 ms startup. Direct disk writes. No export step. Works with any MCP client.
+**Inkstone is a persistent memory layer for AI agents.** A SQLite-backed MCP server with full-text search, vector embeddings, exponential decay, graph traversal, and a 14-step automated maintenance pipeline. 71 ms startup. Direct disk writes. No export step. Works with any MCP client.
 
 ```bash
 # Start the memory server
