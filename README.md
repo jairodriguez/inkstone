@@ -1,33 +1,32 @@
-# Inkstone — Memory That Lasts
+# Inkstone — The AI Agent That Remembers
 
 [![CI](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml/badge.svg)](https://github.com/jairodriguez/inkstone/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-blue.svg)](https://modelcontextprotocol.io)
+[![npm](https://img.shields.io/npm/v/inkstone-mcp)](https://www.npmjs.com/package/inkstone-mcp)
 
-Your AI agents forget everything between sessions. Inkstone is the persistent memory they don't have — a SQLite-backed MCP server that stores, searches, and maintains knowledge with full-text search, vector embeddings, decay scoring, and a 14-step automated maintenance pipeline.
+Every new AI session starts with a blank slate. Your agent doesn't remember the infrastructure setup you explained yesterday, the deployment preferences you set last week, or the decision you made about Postgres hosting last month. You repeat yourself constantly.
 
-**71 ms startup. Direct disk writes. No export step. Works with any MCP client.**
+**Inkstone is the memory layer your agent queries like its own brain.** A SQLite-backed MCP server with full-text search, vector embeddings, exponential decay, graph traversal, and a 14-step automated maintenance pipeline. 71 ms startup. Direct disk writes. No export step. Works with any MCP client.
 
 ```bash
 # Start the memory server
 inkstone
 
 # Write a memory
-inkstone write "DHL Express is the preferred carrier" --ns=/business/logistics
+inkstone write "We use PostgreSQL on AWS RDS — primary db is app-prod-us-east-1" --ns=/system/infrastructure
 
 # Search
-inkstone search "DHL"
+inkstone search "RDS"
 
-# Run automated maintenance
-inkstone dream
+# Tell your agent: "check your memory before answering."
+# The agent calls memory_search automatically.
 ```
 
 ## Why Inkstone?
 
-Every AI agent starts each session with amnesia. You tell it your preferences, your decisions, your context — and it forgets everything the next time you talk.
-
-Agent memory servers exist, but most are toys. Inkstone is built for production:
+Agent memory servers exist, but most are toys. They're slow (13s WASM load), fragile (in-memory export on every write), or missing search quality. Inkstone is built for production:
 
 - **Native SQLite (better-sqlite3)**: 71 ms startup. No 13-second WASM load. No 1.13 GB export. Writes go straight to disk via WAL journal.
 - **Hybrid search**: Full-text (Porter stemmer + BM25) + vector embeddings (Ollama or OpenAI) + graph traversal. Score fusion produces relevant results, not keyword matches.
