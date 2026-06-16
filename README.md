@@ -41,7 +41,16 @@ Agent memory servers exist, but most are toys. Inkstone is built for production:
 ### Install
 
 ```bash
-npm install -g inkstone
+npm install -g inkstone-mcp
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/jairodriguez/inkstone.git
+cd inkstone
+npm install && npm run build
+npm install -g .
 ```
 
 ### Configure
